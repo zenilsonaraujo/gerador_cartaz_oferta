@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Gerador de cartaz de oferta personalizado para promoções">
-  <title>Gerador de Cartaz de Oferta - Crie promoções atrativas</title>
+  <title>Gerador de Cartaz de Oferta</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -36,7 +36,7 @@
         display: none !important;
       }
       /* Garante que as cores de fundo sejam impressas */
-      .bg-yellow-300, .bg-red-700 {
+      .bg-yellow-300, .bg-red-700, .bg-black, .bg-orange-500, .bg-green-600, .bg-laranja, .bg-red-600 {
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
@@ -54,6 +54,19 @@
     .produto-shadow {
       text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.7);
       font-weight: 900;
+    }
+    .neon-text {
+      text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0073e6, 0 0 20px #0073e6;
+    }
+    .bg-laranja {
+      background-color: #FF6B35;
+      background-image: repeating-linear-gradient(
+        45deg,
+        rgba(255,255,255,0.1),
+        rgba(255,255,255,0.1) 10px,
+        rgba(255,255,255,0.05) 10px,
+        rgba(255,255,255,0.05) 20px
+      );
     }
     #cartazContainer {
       display: flex;
@@ -74,28 +87,28 @@
       line-height: 1.1;
       white-space: pre-line;
       word-break: break-word;
-      font-size: 8.75rem;
+      font-size: 5.6875rem;
       font-weight: 900;
     }
     /* Tamanhos das fontes */
     #cartaz .text-oferta {
-      font-size: 8.75rem;
+      font-size: 5.6875rem;
       font-weight: 900;
     }
     #cartaz .text-produto {
-      font-size: 8.75rem;
+      font-size: 5.6875rem;
       font-weight: 900;
     }
     #cartaz .text-8xl {
-      font-size: 14rem;
+      font-size: 12.285rem;
       font-weight: 900;
     }
     #cartaz .text-5xl {
-      font-size: 5.25rem;
+      font-size: 4.606875rem;
       font-weight: 900;
     }
     #cartaz .text-unidade {
-      font-size: 2.625rem; /* 50% menor que text-5xl */
+      font-size: 2.3034375rem;
       font-weight: 900;
     }
     #cartaz {
@@ -121,7 +134,16 @@
       margin-left: 0.5rem;
     }
     .unit-spacer {
-      height: 1.5rem; /* Espaço para alinhar com os centavos */
+      height: 1.5rem;
+    }
+    .template-btn {
+      transition: all 0.3s ease;
+    }
+    .template-btn:hover {
+      transform: scale(1.05);
+    }
+    .sem-cabecalho {
+      display: none;
     }
   </style>
 </head>
@@ -146,6 +168,32 @@
           <label for="unidade" class="block font-bold mb-1 text-gray-700">UNIDADE DE MEDIDA*</label>
           <input id="unidade" type="text" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition font-bold" placeholder="EX: PAR" required />
         </div>
+        
+        <!-- Seletor de Templates -->
+        <div>
+          <label class="block font-bold mb-2 text-gray-700">ESCOLHA O TEMPLATE:</label>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <button type="button" onclick="aplicarTemplate('padrao')" class="template-btn bg-yellow-300 text-gray-800 font-bold py-2 px-4 rounded-lg border-2 border-yellow-400">
+              PADRÃO
+            </button>
+            <button type="button" onclick="aplicarTemplate('blackfriday')" class="template-btn bg-black text-white font-bold py-2 px-4 rounded-lg border-2 border-gray-700 neon-text">
+              BLACK FRIDAY
+            </button>
+            <button type="button" onclick="aplicarTemplate('liquidacao')" class="template-btn bg-red-600 text-white font-bold py-2 px-4 rounded-lg border-2 border-red-700">
+              LIQUIDAÇÃO
+            </button>
+            <button type="button" onclick="aplicarTemplate('feirao')" class="template-btn bg-green-600 text-white font-bold py-2 px-4 rounded-lg border-2 border-green-700">
+              FEIRÃO
+            </button>
+            <button type="button" onclick="aplicarTemplate('relampago')" class="template-btn bg-orange-500 text-white font-bold py-2 px-4 rounded-lg border-2 border-orange-600">
+              PROMOÇÃO RELÂMPAGO
+            </button>
+            <button type="button" onclick="aplicarTemplate('laranja')" class="template-btn bg-orange-600 text-white font-bold py-2 px-4 rounded-lg border-2 border-orange-700">
+              LARANJA LISTRADO
+            </button>
+          </div>
+        </div>
+
         <div class="flex flex-col sm:flex-row gap-3 mt-2">
           <button type="button" onclick="gerarCartaz()" class="bg-red-600 text-white font-black py-3 rounded-lg hover:bg-red-700 transition flex-1 flex items-center justify-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -165,13 +213,13 @@
 
     <div id="cartaz" class="relative bg-yellow-300 rounded-xl shadow-2xl flex flex-col items-center justify-start overflow-hidden border-4 border-white mx-auto">
       <div id="cartazContainer">
-        <div class="w-full bg-red-700 text-white text-center py-6 text-oferta font-black shadow-md">OFERTA</div>
+        <div id="cabecalhoTemplate" class="w-full bg-red-700 text-white text-center py-6 text-oferta font-black shadow-md">OFERTA</div>
         <div id="textoContainer" class="text-center">
           <div id="cartazProduto" class="text-red-700 text-produto font-black leading-tight auto-adjust produto-shadow"></div>
           <div class="flex items-baseline justify-center mt-4">
-            <span class="text-5xl mr-1">R$</span>
+            <span id="moeda" class="text-5xl mr-1">R$</span>
             <span id="precoInteiro" class="text-8xl price-shadow">0</span>
-            <span class="text-5xl price-shadow">,<span id="precoCentavos">00</span></span>
+            <span id="centavosContainer" class="text-5xl price-shadow">,<span id="precoCentavos">00</span></span>
             <div class="unit-container">
               <div class="unit-spacer"></div>
               <span id="cartazUnidade" class="text-unidade unit-shadow">UN</span>
@@ -188,6 +236,9 @@
   </div>
 
   <script>
+    // Variável para armazenar o template atual
+    let templateAtual = 'padrao';
+
     function formatarPreco(valor) {
       if (!valor.includes(',')) {
         valor += ',00';
@@ -215,6 +266,99 @@
       const precoValido = /^\d+([,.]\d{1,2})?$/.test(preco);
       
       return produto !== '' && preco !== '' && precoValido && unidade !== '';
+    }
+
+    function aplicarTemplate(template) {
+      const cartaz = document.getElementById('cartaz');
+      const cabecalho = document.getElementById('cabecalhoTemplate');
+      const produto = document.getElementById('cartazProduto');
+      const moeda = document.getElementById('moeda');
+      const precoInteiro = document.getElementById('precoInteiro');
+      const centavosContainer = document.getElementById('centavosContainer');
+      const precoCentavos = document.getElementById('precoCentavos');
+      const unidade = document.getElementById('cartazUnidade');
+      
+      templateAtual = template;
+      
+      // Resetar todas as classes
+      cartaz.className = 'relative rounded-xl shadow-2xl flex flex-col items-center justify-start overflow-hidden border-4 border-white mx-auto';
+      cabecalho.className = 'w-full text-white text-center py-6 text-oferta font-black shadow-md';
+      produto.className = 'text-produto font-black leading-tight auto-adjust produto-shadow';
+      
+      // Mostrar cabeçalho por padrão
+      cabecalho.classList.remove('sem-cabecalho');
+      
+      // Aplicar template selecionado
+      switch(template) {
+        case 'blackfriday':
+          cartaz.classList.add('bg-black', 'border-gray-800');
+          cabecalho.classList.add('bg-blue-900', 'neon-text');
+          cabecalho.textContent = 'BLACK FRIDAY';
+          produto.classList.add('text-white', 'neon-text');
+          moeda.classList.add('text-white', 'neon-text');
+          precoInteiro.classList.add('text-white', 'neon-text');
+          centavosContainer.classList.add('text-white', 'neon-text');
+          unidade.classList.add('text-white', 'neon-text');
+          break;
+          
+        case 'liquidacao':
+          cartaz.classList.add('bg-red-600', 'border-red-700');
+          cabecalho.classList.add('bg-white', 'text-red-600');
+          cabecalho.textContent = 'LIQUIDAÇÃO';
+          produto.classList.add('text-white');
+          moeda.classList.add('text-white');
+          precoInteiro.classList.add('text-white');
+          centavosContainer.classList.add('text-white');
+          unidade.classList.add('text-white');
+          break;
+          
+        case 'feirao':
+          cartaz.classList.add('bg-green-600', 'border-green-700');
+          cabecalho.classList.add('bg-yellow-400', 'text-green-800');
+          cabecalho.textContent = 'FEIRÃO';
+          produto.classList.add('text-yellow-300');
+          moeda.classList.add('text-yellow-300');
+          precoInteiro.classList.add('text-yellow-300');
+          centavosContainer.classList.add('text-yellow-300');
+          unidade.classList.add('text-yellow-300');
+          break;
+          
+        case 'relampago':
+          cartaz.classList.add('bg-orange-500', 'border-orange-600');
+          cabecalho.classList.add('bg-white', 'text-orange-600');
+          cabecalho.textContent = 'PROMOÇÃO RELÂMPAGO';
+          produto.classList.add('text-white');
+          moeda.classList.add('text-white');
+          precoInteiro.classList.add('text-white');
+          centavosContainer.classList.add('text-white');
+          unidade.classList.add('text-white');
+          break;
+          
+        case 'laranja':
+          cartaz.classList.add('bg-laranja', 'border-orange-600');
+          cabecalho.classList.add('sem-cabecalho');
+          produto.classList.add('text-white');
+          moeda.classList.add('text-white');
+          precoInteiro.classList.add('text-white');
+          centavosContainer.classList.add('text-white');
+          unidade.classList.add('text-white');
+          break;
+          
+        default: // Padrão
+          cartaz.classList.add('bg-yellow-300', 'border-white');
+          cabecalho.classList.add('bg-red-700');
+          cabecalho.textContent = 'OFERTA';
+          produto.classList.add('text-red-700');
+          moeda.classList.remove('text-white', 'text-yellow-300', 'neon-text');
+          precoInteiro.classList.remove('text-white', 'text-yellow-300', 'neon-text');
+          centavosContainer.classList.remove('text-white', 'text-yellow-300', 'neon-text');
+          unidade.classList.remove('text-white', 'text-yellow-300', 'neon-text');
+      }
+      
+      // Se já houver dados no formulário, atualiza o cartaz
+      if (document.getElementById('produto').value) {
+        gerarCartaz();
+      }
     }
 
     function gerarCartaz() {
@@ -259,6 +403,9 @@
         document.body.removeChild(clone);
       }, 1000);
     }
+
+    // Inicializa com o template padrão
+    aplicarTemplate('padrao');
 
     document.getElementById('produto').addEventListener('keypress', function(e) {
       if (e.key === 'Enter') {
