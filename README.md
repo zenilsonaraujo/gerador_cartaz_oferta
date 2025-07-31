@@ -11,7 +11,7 @@ Interface responsiva e fácil de usar
 
 🚀 Como usar
 
-Abra o arquivo index.html no navegador
+Abra o arquivo gerador_cartaz_oferta.html no navegador
 
 Preencha os campos:
 Produto: Nome do item
@@ -40,7 +40,7 @@ HTML2Canvas
 
 📁 Estrutura
 projeto/
-├── index.html    # Arquivo principal
+├── gerador_cartaz_oferta.html    # Arquivo principal
 └── README.md     # Este arquivo
 💡 Exemplo
 Entrada:
