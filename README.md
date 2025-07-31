@@ -113,8 +113,7 @@ Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalh
 
 **Zenilson Araújo de Sousa Lacerda**
 
-- GitHub: [@zenilson-lacerda](https://github.com/zenilson-lacerda)
-- Email: zenilson@email.com
+- Email: zenilsonaraujo@gmail.com
 
 ## 🙏 Agradecimentos
 
