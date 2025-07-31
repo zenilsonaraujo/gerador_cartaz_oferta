@@ -1,52 +1,57 @@
 Gerador de Cartaz de Oferta
+https://preview.jpg (adicione uma imagem de preview depois)
 
-Uma aplicação web simples para criar cartazes promocionais.
+Um gerador de cartazes de oferta profissional para criar promoções atrativas em segundos. Ideal para comércios, lojas e supermercados que precisam de cartazes promocionais de alta qualidade.
 
-📋 O que faz
+Funcionalidades Principais
+🖼️ Geração rápida de cartazes promocionais
 
-Cria cartazes de oferta
-Preenche produto, preço e unidade
-Gera e baixa como imagem PNG
-Interface responsiva e fácil de usar
+✨ Design profissional com tipografia em destaque
 
-🚀 Como usar
+🖨️ Impressão direta em formato PDF
 
-Abra o arquivo gerador_cartaz_oferta.html no navegador
+📱 Interface responsiva e fácil de usar
 
+🎨 Personalização completa dos textos e valores
+
+Como Usar
 Preencha os campos:
-Produto: Nome do item
-Preço: Valor (ex: 29,90)
-Unidade: Medida (ex: UN, KG, PAR)
 
+Produto: Nome do produto em promoção
 
-Clique em "GERAR CARTAZ"
-Clique em "SALVAR COMO PNG" para baixar
+Preço: Valor da oferta (formato: 99,90)
 
-🛠️ Tecnologias
+Unidade: Unidade de medida (ex: PAR, KG, UN)
 
+Clique em "GERAR CARTAZ" para visualizar
+
+Use "IMPRIMIR COMO PDF" para salvar ou imprimir
+
+Tecnologias Utilizadas
 HTML5
-CSS3
+
+CSS3 (Tailwind CSS)
+
 JavaScript
-Tailwind CSS
-HTML2Canvas
 
-📱 Funcionalidades
+html2canvas (para geração de imagens)
 
-✅ Ajuste automático do tamanho da fonte
-✅ Formatação automática de preços
-✅ Design responsivo
-✅ Download em alta qualidade
-✅ Validação de campos
+Google Fonts (Roboto)
 
-📁 Estrutura
-projeto/
-├── gerador_cartaz_oferta.html    # Arquivo principal
-└── README.md     # Este arquivo
-💡 Exemplo
-Entrada:
+Personalização
+Você pode facilmente personalizar:
 
-Produto: SMARTPHONE SAMSUNG
-Preço: 899,90
-Unidade: UN
+Cores do cartaz (editando as classes bg-yellow-300 e bg-red-700)
 
-Resultado: Cartaz amarelo com faixa vermelha "OFERTA" e informações formatadas
+Tamanhos de fonte (no bloco de estilos CSS)
+
+Textos fixos (como o título "OFERTA")
+
+Licença
+Este projeto está licenciado sob a licença MIT - veja o arquivo LICENSE para detalhes.
+
+Desenvolvedor
+Zenilson Araújo de Sousa Lacerda
+📧 zenilsonaraujo@gmail.com
+
+Dica: Para usar localmente, basta baixar os arquivos e abrir o index.html no seu navegador. Não requer instalação ou dependências extras!
