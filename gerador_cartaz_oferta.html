@@ -14,14 +14,46 @@
     body {
       font-family: 'Roboto', sans-serif;
     }
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #cartaz, #cartaz * {
+        visibility: visible;
+      }
+      #cartaz {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 210mm;
+        height: 297mm;
+        margin: 0;
+        padding: 0;
+        border: none;
+        box-shadow: none;
+      }
+      .no-print {
+        display: none !important;
+      }
+      /* Garante que as cores de fundo sejam impressas */
+      .bg-yellow-300, .bg-red-700 {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+    @page {
+      size: A4;
+      margin: 0;
+    }
     .price-shadow {
-      text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.3);
+      text-shadow: 0.05em 0.05em 0 rgba(0, 0, 0, 0.3);
     }
     .unit-shadow {
-      text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+      text-shadow: 0.03em 0.03em 0 rgba(0, 0, 0, 0.3);
     }
     .produto-shadow {
-      text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.5); /* Sombra mais escura e pronunciada */
+      text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.7);
+      font-weight: 900;
     }
     #cartazContainer {
       display: flex;
@@ -42,31 +74,54 @@
       line-height: 1.1;
       white-space: pre-line;
       word-break: break-word;
+      font-size: 8.75rem;
+      font-weight: 900;
     }
     /* Tamanhos das fontes */
     #cartaz .text-oferta {
-      font-size: 5rem; /* 80px */
+      font-size: 8.75rem;
+      font-weight: 900;
     }
     #cartaz .text-produto {
-      font-size: 5rem; /* 80px - mesmo tamanho da oferta */
+      font-size: 8.75rem;
+      font-weight: 900;
     }
     #cartaz .text-8xl {
-      font-size: 8rem; /* 128px */
+      font-size: 14rem;
+      font-weight: 900;
     }
-    #cartaz .text-5xl-leading {
-      font-size: 3rem; /* 48px */
+    #cartaz .text-5xl {
+      font-size: 5.25rem;
+      font-weight: 900;
+    }
+    #cartaz .text-unidade {
+      font-size: 2.625rem; /* 50% menor que text-5xl */
+      font-weight: 900;
     }
     #cartaz {
       box-sizing: border-box;
+      width: 210mm;
+      height: 297mm;
     }
     /* Forçar texto em maiúsculo nos inputs */
     input {
       text-transform: uppercase;
+      font-weight: 700;
     }
     /* Estilo para o input de preço */
     #preco {
       letter-spacing: 0.5px;
       text-transform: none;
+    }
+    .unit-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      margin-left: 0.5rem;
+    }
+    .unit-spacer {
+      height: 1.5rem; /* Espaço para alinhar com os centavos */
     }
   </style>
 </head>
@@ -98,27 +153,29 @@
             </svg>
             GERAR CARTAZ
           </button>
-          <button type="button" onclick="salvarImagem()" id="saveBtn" class="bg-green-600 text-white font-black py-3 rounded-lg hover:bg-green-700 transition flex-1 flex items-center justify-center gap-2" disabled>
+          <button type="button" onclick="imprimirPDF()" class="bg-blue-600 text-white font-black py-3 rounded-lg hover:bg-blue-700 transition flex-1 flex items-center justify-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
             </svg>
-            SALVAR COMO PNG
+            IMPRIMIR COMO PDF
           </button>
         </div>
       </form>
     </div>
 
-    <div id="cartaz" class="relative w-full max-w-lg aspect-[3/4] bg-yellow-300 rounded-xl shadow-2xl flex flex-col items-center justify-start overflow-hidden border-4 border-white">
+    <div id="cartaz" class="relative bg-yellow-300 rounded-xl shadow-2xl flex flex-col items-center justify-start overflow-hidden border-4 border-white mx-auto">
       <div id="cartazContainer">
         <div class="w-full bg-red-700 text-white text-center py-6 text-oferta font-black shadow-md">OFERTA</div>
         <div id="textoContainer" class="text-center">
           <div id="cartazProduto" class="text-red-700 text-produto font-black leading-tight auto-adjust produto-shadow"></div>
-          <div class="relative mt-4">
-            <div class="text-8xl font-black text-black price-shadow flex items-start justify-center">
-              <span class="text-5xl-leading mr-1 mt-6">R$</span>
-              <span id="precoInteiro">0</span><span class="text-5xl-leading align-top leading-none">,<span id="precoCentavos">00</span></span>
+          <div class="flex items-baseline justify-center mt-4">
+            <span class="text-5xl mr-1">R$</span>
+            <span id="precoInteiro" class="text-8xl price-shadow">0</span>
+            <span class="text-5xl price-shadow">,<span id="precoCentavos">00</span></span>
+            <div class="unit-container">
+              <div class="unit-spacer"></div>
+              <span id="cartazUnidade" class="text-unidade unit-shadow">UN</span>
             </div>
-            <div id="cartazUnidade" class="absolute right-0 bottom-0 text-3xl font-black text-black unit-shadow">UN</div>
           </div>
         </div>
       </div>
@@ -132,7 +189,6 @@
 
   <script>
     function formatarPreco(valor) {
-      // Garante que o valor tenha duas casas decimais
       if (!valor.includes(',')) {
         valor += ',00';
       } else {
@@ -141,10 +197,8 @@
         if (partes[1].length === 0) valor += '00';
       }
       
-      // Remove caracteres não numéricos exceto vírgula
       valor = valor.replace(/[^\d,]/g, '');
       
-      // Garante que tem apenas uma vírgula
       const partes = valor.split(',');
       if (partes.length > 2) {
         valor = partes[0] + ',' + partes.slice(1).join('');
@@ -158,32 +212,9 @@
       const preco = document.getElementById('preco').value.trim();
       const unidade = document.getElementById('unidade').value.trim();
       
-      // Validação do preço
       const precoValido = /^\d+([,.]\d{1,2})?$/.test(preco);
       
       return produto !== '' && preco !== '' && precoValido && unidade !== '';
-    }
-
-    function ajustarTamanhoFonte(elemento) {
-      const container = document.getElementById('textoContainer');
-      const containerWidth = container.offsetWidth;
-      const containerHeight = container.offsetHeight;
-      
-      // Começa com o tamanho máximo (5rem = 80px)
-      let fontSize = 80;
-      elemento.style.fontSize = fontSize + 'px';
-      
-      // Reduz até caber na largura
-      while (elemento.scrollWidth > containerWidth * 0.95 && fontSize > 20) {
-        fontSize--;
-        elemento.style.fontSize = fontSize + 'px';
-      }
-      
-      // Reduz mais se necessário para caber na altura
-      while (elemento.scrollHeight > containerHeight * 0.4 && fontSize > 20) {
-        fontSize--;
-        elemento.style.fontSize = fontSize + 'px';
-      }
     }
 
     function gerarCartaz() {
@@ -196,63 +227,39 @@
       let preco = document.getElementById('preco').value;
       const unidade = document.getElementById('unidade').value.toUpperCase();
 
-      // Formata o preço
       preco = formatarPreco(preco);
       const [reais, centavos] = preco.split(',');
 
       const cartazProduto = document.getElementById('cartazProduto');
       
-      // Mantém quebras de linha
       cartazProduto.textContent = produto;
       document.getElementById('precoInteiro').textContent = reais;
       document.getElementById('precoCentavos').textContent = centavos.padEnd(2, '0');
       document.getElementById('cartazUnidade').textContent = unidade;
-      
-      // Ajusta o tamanho do texto do produto
-      ajustarTamanhoFonte(cartazProduto);
-      
-      // Habilita o botão de salvar
-      document.getElementById('saveBtn').disabled = false;
     }
 
-    function salvarImagem() {
-      const cartaz = document.getElementById('cartaz');
-      const saveBtn = document.getElementById('saveBtn');
+    function imprimirPDF() {
+      // Cria um clone do cartaz com tamanho A4 para impressão
+      const originalCartaz = document.getElementById('cartaz');
+      const clone = originalCartaz.cloneNode(true);
+      clone.style.width = '210mm';
+      clone.style.height = '297mm';
+      clone.style.position = 'absolute';
+      clone.style.left = '0';
+      clone.style.top = '0';
+      clone.style.margin = '0';
+      clone.style.padding = '0';
       
-      saveBtn.innerHTML = '<svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> SALVANDO...';
-      saveBtn.disabled = true;
+      // Adiciona ao body e imprime
+      document.body.appendChild(clone);
+      window.print();
       
-      const options = {
-        scale: 2,
-        logging: false,
-        useCORS: true,
-        backgroundColor: null,
-        allowTaint: true,
-        letterRendering: true,
-        width: cartaz.offsetWidth,
-        height: cartaz.offsetHeight,
-        windowWidth: cartaz.scrollWidth,
-        windowHeight: cartaz.scrollHeight
-      };
-      
-      html2canvas(cartaz, options).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'cartaz-oferta-' + new Date().toISOString().replace(/[:.]/g, '-') + '.png';
-        link.href = canvas.toDataURL('image/png', 1.0);
-        link.click();
-        
-        saveBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg> SALVAR COMO PNG';
-        saveBtn.disabled = false;
-      }).catch(err => {
-        console.error('Erro ao gerar imagem:', err);
-        alert('Ocorreu um erro ao gerar a imagem. Por favor, tente novamente.');
-        
-        saveBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg> SALVAR COMO PNG';
-        saveBtn.disabled = false;
-      });
+      // Remove o clone após impressão
+      setTimeout(() => {
+        document.body.removeChild(clone);
+      }, 1000);
     }
 
-    // Adiciona quebra de linha com Enter no campo produto
     document.getElementById('produto').addEventListener('keypress', function(e) {
       if (e.key === 'Enter') {
         e.preventDefault();
@@ -263,7 +270,6 @@
       }
     });
 
-    // Converte para maiúsculo automaticamente (exceto campo preço)
     document.querySelectorAll('input').forEach(input => {
       if (input.id !== 'preco') {
         input.addEventListener('input', function() {
@@ -271,7 +277,6 @@
         });
       }
       
-      // Enter em outros campos gera o cartaz
       if (input.id !== 'produto') {
         input.addEventListener('keypress', function(e) {
           if (e.key === 'Enter') {
@@ -282,17 +287,14 @@
       }
     });
 
-    // Máscara para o campo de preço
     document.getElementById('preco').addEventListener('input', function() {
       let valor = this.value.replace(/[^\d,]/g, '');
       
-      // Garante apenas uma vírgula
       const partes = valor.split(',');
       if (partes.length > 2) {
         valor = partes[0] + ',' + partes.slice(1).join('');
       }
       
-      // Limita a 2 casas decimais
       if (partes.length > 1) {
         partes[1] = partes[1].slice(0, 2);
         valor = partes[0] + ',' + partes[1];
