@@ -1,6 +1,3 @@
-Gerador de Cartaz de Oferta
-https://preview.jpg (adicione uma imagem de preview depois)
-
 Um gerador de cartazes de oferta profissional para criar promoções atrativas em segundos. Ideal para comércios, lojas e supermercados que precisam de cartazes promocionais de alta qualidade.
 
 Funcionalidades Principais
