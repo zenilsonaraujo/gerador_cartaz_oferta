@@ -35,8 +35,7 @@
       .no-print {
         display: none !important;
       }
-      /* Garante que as cores de fundo sejam impressas */
-      .bg-yellow-300, .bg-red-700, .bg-black, .bg-orange-500, .bg-green-600, .bg-laranja, .bg-red-600 {
+      .bg-yellow-300, .bg-red-700, .bg-black, .bg-orange-500, .bg-green-600, .bg-laranja, .bg-red-600, .bg-orange-600 {
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
@@ -90,7 +89,6 @@
       font-size: 5.6875rem;
       font-weight: 900;
     }
-    /* Tamanhos das fontes */
     #cartaz .text-oferta {
       font-size: 5.6875rem;
       font-weight: 900;
@@ -116,12 +114,10 @@
       width: 210mm;
       height: 297mm;
     }
-    /* Forçar texto em maiúsculo nos inputs */
     input {
       text-transform: uppercase;
       font-weight: 700;
     }
-    /* Estilo para o input de preço */
     #preco {
       letter-spacing: 0.5px;
       text-transform: none;
@@ -145,6 +141,63 @@
     .sem-cabecalho {
       display: none;
     }
+    .preco-original-container {
+      color: #9ca3af; /* Cinza claro */
+      text-decoration: line-through;
+      text-decoration-style: double; /* Tachado duplo */
+      font-size: 6.5rem; /* Ajustado para 6.5rem */
+      display: flex;
+      align-items: flex-end;
+      font-weight: 900;
+    }
+    .preco-promocional-container {
+      color: #000;
+      font-size: 8rem; /* Ajustado para 8rem */
+      display: flex;
+      align-items: flex-end;
+      font-weight: 900;
+    }
+    .preco-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1rem;
+      gap: 0.5rem;
+    }
+    .preco-linha {
+      display: flex;
+      align-items: flex-end;
+    }
+    .preco-label {
+      font-size: 3rem;
+      margin-right: 0.5rem;
+      font-weight: 700;
+    }
+    .numero-grande {
+      font-size: 22.5rem;
+      font-weight: 900;
+      color: #000;
+      text-align: center;
+      line-height: 1;
+    }
+    .produto-simples {
+      font-size: 11rem;
+      font-weight: 900;
+      color: #000;
+      text-align: center;
+      width: 100%;
+      padding: 0 1rem;
+    }
+    .unidade-preco {
+      font-size: 3rem;
+      font-weight: 900;
+      margin-left: 0.5rem;
+      margin-bottom: 0.8rem;
+    }
+    .preco-promocional-label { /* Adicionado para o "POR" */
+      color: #000;
+    }
   </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
@@ -156,20 +209,6 @@
 
     <div class="bg-white shadow-xl rounded-2xl p-6 w-full max-w-2xl mb-10">
       <form class="grid grid-cols-1 gap-4">
-        <div>
-          <label for="produto" class="block font-bold mb-1 text-gray-700">PRODUTO*</label>
-          <input id="produto" type="text" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition font-bold" placeholder="EX: TÊNIS ESPORTIVO MASCULINO" required />
-        </div>
-        <div>
-          <label for="preco" class="block font-bold mb-1 text-gray-700">PREÇO*</label>
-          <input id="preco" type="text" inputmode="decimal" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition font-bold" placeholder="EX: 129,90" required />
-        </div>
-        <div>
-          <label for="unidade" class="block font-bold mb-1 text-gray-700">UNIDADE DE MEDIDA*</label>
-          <input id="unidade" type="text" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition font-bold" placeholder="EX: PAR" required />
-        </div>
-        
-        <!-- Seletor de Templates -->
         <div>
           <label class="block font-bold mb-2 text-gray-700">ESCOLHA O TEMPLATE:</label>
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -191,7 +230,37 @@
             <button type="button" onclick="aplicarTemplate('laranja')" class="template-btn bg-orange-600 text-white font-bold py-2 px-4 rounded-lg border-2 border-orange-700">
               LARANJA LISTRADO
             </button>
+            <button type="button" onclick="aplicarTemplate('amarelo-simples')" class="template-btn bg-yellow-300 text-gray-800 font-bold py-2 px-4 rounded-lg border-2 border-yellow-400">
+              AMARELO SIMPLES
+            </button>
+            <button type="button" onclick="aplicarTemplate('laranja-simples')" class="template-btn bg-orange-500 text-gray-800 font-bold py-2 px-4 rounded-lg border-2 border-orange-600">
+              LARANJA SIMPLES
+            </button>
+            <button type="button" onclick="aplicarTemplate('numero-amarelo')" class="template-btn bg-yellow-300 text-gray-800 font-bold py-2 px-4 rounded-lg border-2 border-yellow-400">
+              NÚMERO AMARELO
+            </button>
           </div>
+        </div>
+
+        <div id="produtoContainer">
+          <label for="produto" class="block font-bold mb-1 text-gray-700">PRODUTO*</label>
+          <input id="produto" type="text" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition font-bold" placeholder="EX: TÊNIS ESPORTIVO MASCULINO" required />
+        </div>
+        <div id="numeroContainerInput" class="hidden">
+          <label for="numero" class="block font-bold mb-1 text-gray-700">NÚMERO*</label>
+          <input id="numero" type="text" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition font-bold" placeholder="EX: 10" />
+        </div>
+        <div id="precoContainer">
+          <label for="preco" class="block font-bold mb-1 text-gray-700">PREÇO PROMOCIONAL*</label>
+          <input id="preco" type="text" inputmode="decimal" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition font-bold" placeholder="EX: 129,90" required />
+        </div>
+        <div id="precoOriginalContainer" class="hidden">
+          <label for="precoOriginal" class="block font-bold mb-1 text-gray-700">PREÇO ORIGINAL</label>
+          <input id="precoOriginal" type="text" inputmode="decimal" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition font-bold" placeholder="EX: 199,90" />
+        </div>
+        <div id="unidadeContainer">
+          <label for="unidade" class="block font-bold mb-1 text-gray-700">UNIDADE DE MEDIDA*</label>
+          <input id="unidade" type="text" class="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition font-bold" placeholder="EX: PAR" required />
         </div>
 
         <div class="flex flex-col sm:flex-row gap-3 mt-2">
@@ -216,7 +285,7 @@
         <div id="cabecalhoTemplate" class="w-full bg-red-700 text-white text-center py-6 text-oferta font-black shadow-md">OFERTA</div>
         <div id="textoContainer" class="text-center">
           <div id="cartazProduto" class="text-red-700 text-produto font-black leading-tight auto-adjust produto-shadow"></div>
-          <div class="flex items-baseline justify-center mt-4">
+          <div id="precoNormalContainer" class="flex items-baseline justify-center mt-4">
             <span id="moeda" class="text-5xl mr-1">R$</span>
             <span id="precoInteiro" class="text-8xl price-shadow">0</span>
             <span id="centavosContainer" class="text-5xl price-shadow">,<span id="precoCentavos">00</span></span>
@@ -224,6 +293,25 @@
               <div class="unit-spacer"></div>
               <span id="cartazUnidade" class="text-unidade unit-shadow">UN</span>
             </div>
+          </div>
+          <div id="precoPromocionalContainer" class="preco-container hidden">
+            <div class="preco-original-container">
+              <span class="preco-label">DE</span>
+              <span id="moedaOriginal">R$</span>
+              <span id="precoOriginalInteiro">0</span>,<span id="precoOriginalCentavos">00</span>
+              <span id="cartazUnidadeOriginal" class="unidade-preco">UN</span>
+            </div>
+            <div class="preco-promocional-container">
+              <span class="preco-label preco-promocional-label">POR</span>
+              <span id="moedaPromocional">R$</span>
+              <span id="precoPromocionalInteiro">0</span>,<span id="precoPromocionalCentavos">00</span>
+              <span id="cartazUnidadePromocional" class="unidade-preco">UN</span> </div>
+          </div>
+          <div id="numeroContainerCartaz" class="hidden">
+            <div id="cartazNumero" class="numero-grande">0</div>
+          </div>
+          <div id="produtoSimplesContainer" class="hidden">
+            <div id="cartazProdutoSimples" class="produto-simples"></div>
           </div>
         </div>
       </div>
@@ -236,10 +324,11 @@
   </div>
 
   <script>
-    // Variável para armazenar o template atual
     let templateAtual = 'padrao';
 
     function formatarPreco(valor) {
+      if (!valor) return '0,00';
+      
       if (!valor.includes(',')) {
         valor += ',00';
       } else {
@@ -259,6 +348,16 @@
     }
 
     function validarFormulario() {
+      if (templateAtual === 'numero-amarelo') {
+        const numero = document.getElementById('numero').value.trim();
+        return numero !== '';
+      }
+      
+      if (templateAtual === 'amarelo-simples' || templateAtual === 'laranja-simples') {
+        const produto = document.getElementById('produto').value.trim();
+        return produto !== '';
+      }
+      
       const produto = document.getElementById('produto').value.trim();
       const preco = document.getElementById('preco').value.trim();
       const unidade = document.getElementById('unidade').value.trim();
@@ -277,18 +376,49 @@
       const centavosContainer = document.getElementById('centavosContainer');
       const precoCentavos = document.getElementById('precoCentavos');
       const unidade = document.getElementById('cartazUnidade');
+      const precoNormalContainer = document.getElementById('precoNormalContainer');
+      const precoPromocionalContainer = document.getElementById('precoPromocionalContainer');
+      const numeroContainerCartaz = document.getElementById('numeroContainerCartaz');
+      const produtoSimplesContainer = document.getElementById('produtoSimplesContainer');
+      const produtoContainerInput = document.getElementById('produtoContainer');
+      const numeroContainerInput = document.getElementById('numeroContainerInput');
+      const precoContainer = document.getElementById('precoContainer');
+      const precoOriginalContainer = document.getElementById('precoOriginalContainer');
+      const unidadeContainer = document.getElementById('unidadeContainer');
+      const cartazUnidadePromocional = document.getElementById('cartazUnidadePromocional');
       
       templateAtual = template;
       
-      // Resetar todas as classes
+      // Reset all classes and text for a clean slate before applying new styles
       cartaz.className = 'relative rounded-xl shadow-2xl flex flex-col items-center justify-start overflow-hidden border-4 border-white mx-auto';
       cabecalho.className = 'w-full text-white text-center py-6 text-oferta font-black shadow-md';
       produto.className = 'text-produto font-black leading-tight auto-adjust produto-shadow';
       
-      // Mostrar cabeçalho por padrão
+      precoNormalContainer.classList.remove('hidden');
+      precoPromocionalContainer.classList.add('hidden');
+      numeroContainerCartaz.classList.add('hidden');
+      produtoSimplesContainer.classList.add('hidden');
+      
+      produtoContainerInput.classList.remove('hidden');
+      numeroContainerInput.classList.add('hidden');
+      precoContainer.classList.remove('hidden');
+      precoOriginalContainer.classList.add('hidden');
+      unidadeContainer.classList.remove('hidden');
+      
       cabecalho.classList.remove('sem-cabecalho');
       
-      // Aplicar template selecionado
+      // Remove specific template-related classes that might conflict
+      moeda.classList.remove('text-white', 'text-yellow-300', 'neon-text', 'text-black');
+      precoInteiro.classList.remove('text-white', 'text-yellow-300', 'neon-text', 'text-black');
+      centavosContainer.classList.remove('text-white', 'text-yellow-300', 'neon-text', 'text-black');
+      unidade.classList.remove('text-white', 'text-yellow-300', 'neon-text', 'text-black', 'hidden');
+      produto.style.fontSize = ''; // Reset custom font size
+      
+      // Esconder a unidade promocional por padrão
+      if (cartazUnidadePromocional) {
+        cartazUnidadePromocional.classList.add('hidden');
+      }
+
       switch(template) {
         case 'blackfriday':
           cartaz.classList.add('bg-black', 'border-gray-800');
@@ -328,10 +458,15 @@
           cabecalho.classList.add('bg-white', 'text-orange-600');
           cabecalho.textContent = 'PROMOÇÃO RELÂMPAGO';
           produto.classList.add('text-white');
-          moeda.classList.add('text-white');
-          precoInteiro.classList.add('text-white');
-          centavosContainer.classList.add('text-white');
-          unidade.classList.add('text-white');
+          produto.style.fontSize = '8.3rem'; // Ajustado conforme solicitado
+          
+          precoNormalContainer.classList.add('hidden');
+          precoPromocionalContainer.classList.remove('hidden');
+          precoOriginalContainer.classList.remove('hidden');
+          
+          if (cartazUnidadePromocional) {
+            cartazUnidadePromocional.classList.remove('hidden'); // Exibir a unidade promocional
+          }
           break;
           
         case 'laranja':
@@ -344,19 +479,44 @@
           unidade.classList.add('text-white');
           break;
           
-        default: // Padrão
+        case 'amarelo-simples':
+          cartaz.classList.add('bg-yellow-300', 'border-white');
+          cabecalho.classList.add('sem-cabecalho');
+          precoNormalContainer.classList.add('hidden');
+          produtoSimplesContainer.classList.remove('hidden');
+          precoContainer.classList.add('hidden');
+          unidadeContainer.classList.add('hidden');
+          break;
+          
+        case 'laranja-simples':
+          cartaz.classList.add('bg-orange-500', 'border-orange-600');
+          cabecalho.classList.add('sem-cabecalho');
+          precoNormalContainer.classList.add('hidden');
+          produtoSimplesContainer.classList.remove('hidden');
+          precoContainer.classList.add('hidden');
+          unidadeContainer.classList.add('hidden');
+          break;
+          
+        case 'numero-amarelo':
+          cartaz.classList.add('bg-yellow-300', 'border-white');
+          cabecalho.classList.add('sem-cabecalho');
+          precoNormalContainer.classList.add('hidden');
+          numeroContainerCartaz.classList.remove('hidden');
+          produtoContainerInput.classList.add('hidden');
+          numeroContainerInput.classList.remove('hidden');
+          precoContainer.classList.add('hidden');
+          unidadeContainer.classList.add('hidden');
+          break;
+          
+        default:
           cartaz.classList.add('bg-yellow-300', 'border-white');
           cabecalho.classList.add('bg-red-700');
           cabecalho.textContent = 'OFERTA';
           produto.classList.add('text-red-700');
-          moeda.classList.remove('text-white', 'text-yellow-300', 'neon-text');
-          precoInteiro.classList.remove('text-white', 'text-yellow-300', 'neon-text');
-          centavosContainer.classList.remove('text-white', 'text-yellow-300', 'neon-text');
-          unidade.classList.remove('text-white', 'text-yellow-300', 'neon-text');
+          // All other default styling is handled by initial reset
       }
       
-      // Se já houver dados no formulário, atualiza o cartaz
-      if (document.getElementById('produto').value) {
+      if (document.getElementById('produto').value || document.getElementById('numero').value) {
         gerarCartaz();
       }
     }
@@ -368,22 +528,45 @@
       }
 
       const produto = document.getElementById('produto').value.toUpperCase();
+      const numero = document.getElementById('numero')?.value.toUpperCase();
       let preco = document.getElementById('preco').value;
       const unidade = document.getElementById('unidade').value.toUpperCase();
+      const precoOriginal = document.getElementById('precoOriginal')?.value;
 
       preco = formatarPreco(preco);
       const [reais, centavos] = preco.split(',');
 
       const cartazProduto = document.getElementById('cartazProduto');
+      const cartazNumero = document.getElementById('cartazNumero');
+      const cartazProdutoSimples = document.getElementById('cartazProdutoSimples');
+      const cartazUnidadePromocional = document.getElementById('cartazUnidadePromocional');
       
-      cartazProduto.textContent = produto;
+      if (templateAtual === 'numero-amarelo') {
+        cartazNumero.textContent = numero;
+      } else if (templateAtual === 'amarelo-simples' || templateAtual === 'laranja-simples') {
+        cartazProdutoSimples.textContent = produto;
+      } else {
+        cartazProduto.textContent = produto;
+      }
+      
       document.getElementById('precoInteiro').textContent = reais;
       document.getElementById('precoCentavos').textContent = centavos.padEnd(2, '0');
       document.getElementById('cartazUnidade').textContent = unidade;
+      document.getElementById('cartazUnidadeOriginal').textContent = unidade;
+      
+      if (templateAtual === 'relampago' && precoOriginal) {
+        const [reaisOriginal, centavosOriginal] = formatarPreco(precoOriginal).split(',');
+        document.getElementById('precoOriginalInteiro').textContent = reaisOriginal;
+        document.getElementById('precoOriginalCentavos').textContent = centavosOriginal.padEnd(2, '0');
+        document.getElementById('precoPromocionalInteiro').textContent = reais;
+        document.getElementById('precoPromocionalCentavos').textContent = centavos.padEnd(2, '0');
+        if (cartazUnidadePromocional) {
+          cartazUnidadePromocional.textContent = unidade; // Atribui a unidade
+        }
+      }
     }
 
     function imprimirPDF() {
-      // Cria um clone do cartaz com tamanho A4 para impressão
       const originalCartaz = document.getElementById('cartaz');
       const clone = originalCartaz.cloneNode(true);
       clone.style.width = '210mm';
@@ -394,17 +577,14 @@
       clone.style.margin = '0';
       clone.style.padding = '0';
       
-      // Adiciona ao body e imprime
       document.body.appendChild(clone);
       window.print();
       
-      // Remove o clone após impressão
       setTimeout(() => {
         document.body.removeChild(clone);
       }, 1000);
     }
 
-    // Inicializa com o template padrão
     aplicarTemplate('padrao');
 
     document.getElementById('produto').addEventListener('keypress', function(e) {
@@ -418,13 +598,13 @@
     });
 
     document.querySelectorAll('input').forEach(input => {
-      if (input.id !== 'preco') {
+      if (input.id !== 'preco' && input.id !== 'precoOriginal') {
         input.addEventListener('input', function() {
           this.value = this.value.toUpperCase();
         });
       }
       
-      if (input.id !== 'produto') {
+      if (input.id !== 'produto' && input.id !== 'numero') {
         input.addEventListener('keypress', function(e) {
           if (e.key === 'Enter') {
             e.preventDefault();
@@ -435,6 +615,22 @@
     });
 
     document.getElementById('preco').addEventListener('input', function() {
+      let valor = this.value.replace(/[^\d,]/g, '');
+      
+      const partes = valor.split(',');
+      if (partes.length > 2) {
+        valor = partes[0] + ',' + partes.slice(1).join('');
+      }
+      
+      if (partes.length > 1) {
+        partes[1] = partes[1].slice(0, 2);
+        valor = partes[0] + ',' + partes[1];
+      }
+      
+      this.value = valor;
+    });
+
+    document.getElementById('precoOriginal').addEventListener('input', function() {
       let valor = this.value.replace(/[^\d,]/g, '');
       
       const partes = valor.split(',');
